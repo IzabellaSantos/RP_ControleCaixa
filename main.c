@@ -94,7 +94,21 @@ void excluirProduto(Produto produtos[], int *qtdAtualProdutos) {
 }
 
 void gerarRelatorio(Produto produtos[], int qtdAtualProdutos) {
+    FILE *file = fopen("RelatorioProdutos.txt", "w"); 
     
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo!\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    fprintf(file, "Relatório de Produtos\n");
+    fprintf(file, "Id\tNome\t\tQuantidade\tValor\n");
+    for (int i = 0; i < qtdAtualProdutos; i++) {
+        fprintf(file, "%d\t%s\t\t%d\t\t%.2f\n", produtos[i].id, produtos[i].nome, produtos[i].quantidade, produtos[i].valor);
+    }
+    
+    fclose(file);
+    printf("Relatório gerado com sucesso!\n");
 }
 
 void mostrarProdutos(Produto produtos[], int qtdAtualProdutos) {

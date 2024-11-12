@@ -14,6 +14,7 @@ typedef struct {
 
 int menu();
 void limparTela();
+void pausarTela();
 void cadastrarProduto(Produto produtos[], int *qtdAtualProdutos);
 void alterarProduto(Produto produtos[], int qtdAtualProdutos);
 void excluirProduto(Produto produtos[], int *qtdAtualProdutos);
@@ -61,6 +62,8 @@ int main() {
 }
 
 int menu() {
+    limparTela();
+
     int escolha = 0;
     
     printf("--------------------------------------------\n");
@@ -82,7 +85,50 @@ void limparTela() {
     system("clear"); // Para sistemas Unix/Linux use "clear"
 }
 
+// Para que usuário leia mensagem de confirmação a cada função antes de retornar ao menu principal e ser apagado por limparTela()
+void pausarTela() {
+    printf("\nPressione enter para retornar ao menu..\n");
+    getchar();getchar();
+}
+
 void cadastrarProduto(Produto produtos[], int *qtdAtualProdutos) {
+    limparTela();
+
+    FILE *file = fopen("./arquivos/produtos.txt", "a");
+
+    if (file == NULL) {
+        printf("Erro ao abrir o arquivo de produtos.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    Produto novoProduto;
+
+    printf("Insira as informaçoes do produto:\n\n");
+    getchar();
+
+    printf("Digite o ID do produto: ");
+    scanf("%d", &novoProduto.id);
+    getchar();
+
+    printf("Digite o nome do produto: ");
+    fgets(novoProduto.nome, TAMANHO, stdin);
+    novoProduto.nome[strcspn(novoProduto.nome, "\n")] = '\0';
+
+    printf("Digite a quantidade do produto: ");
+    scanf("%d", &novoProduto.quantidade);
+
+    printf("Digite o valor do produto: ");
+    scanf("%f", &novoProduto.valor);
+
+    produtos[*qtdAtualProdutos] = novoProduto;
+    (*qtdAtualProdutos)++;
+
+    fprintf(file, "#%d\tProduto: %s\t\t\t\tQuantidade: %d\t\tValor: R$: %.2f\n", novoProduto.id, novoProduto.nome, novoProduto.quantidade, novoProduto.valor);
+
+    fclose(file);
+
+    printf("Produto cadastrado com sucesso!\n");
+    pausarTela();
 }
 
 void alterarProduto(Produto produtos[], int qtdAtualProdutos) {
@@ -94,7 +140,7 @@ void excluirProduto(Produto produtos[], int *qtdAtualProdutos) {
 }
 
 void gerarRelatorio(Produto produtos[], int qtdAtualProdutos) {
-    FILE *file = fopen("RelatorioProdutos.txt", "w"); 
+    FILE *file = fopen("./arquivos/relatorioProdutos.txt", "w"); 
     
     if (file == NULL) {
         printf("Erro ao abrir o arquivo!\n");
@@ -102,13 +148,15 @@ void gerarRelatorio(Produto produtos[], int qtdAtualProdutos) {
     }
     
     fprintf(file, "Relatório de Produtos\n");
-    fprintf(file, "Id\tNome\t\tQuantidade\tValor\n");
+    fprintf(file, "Id\t\tNome\t\t\t\tQuantidade\tValor\n");
     for (int i = 0; i < qtdAtualProdutos; i++) {
-        fprintf(file, "%d\t%s\t\t%d\t\t%.2f\n", produtos[i].id, produtos[i].nome, produtos[i].quantidade, produtos[i].valor);
+        fprintf(file, "%d\t\t%s\t\t\t\t%d\t\t%.2f\n", produtos[i].id, produtos[i].nome, produtos[i].quantidade, produtos[i].valor);
     }
     
     fclose(file);
+
     printf("Relatório gerado com sucesso!\n");
+    pausarTela();
 }
 
 void mostrarProdutos(Produto produtos[], int qtdAtualProdutos) {

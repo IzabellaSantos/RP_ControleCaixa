@@ -86,7 +86,34 @@ void cadastrarProduto(Produto produtos[], int *qtdAtualProdutos) {
 }
 
 void alterarProduto(Produto produtos[], int qtdAtualProdutos) {
+      int id, encontrado = 0;
     
+    if (qtdAtualProdutos == 0) {
+        printf("Nenhum produto cadastrado para alterar.\n");
+        return;
+    }
+
+    printf("Digite o ID do produto que deseja alterar: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < qtdAtualProdutos; i++) {
+        if (produtos[i].id == id) {
+            encontrado = 1;
+            printf("Produto encontrado: %s\n", produtos[i].nome);
+            
+            printf("Digite o novo nome do produto: ");
+            scanf(" %[^\n]s", produtos[i].nome);
+            
+            printf("Digite a nova quantidade do produto: ");
+            scanf("%d", &produtos[i].quantidade);
+            
+            printf("Digite o novo valor do produto: ");
+            scanf("%f", &produtos[i].valor);
+            
+            printf("Produto alterado com sucesso!\n");
+            break;
+        }
+    }
 }
 
 void excluirProduto(Produto produtos[], int *qtdAtualProdutos) {

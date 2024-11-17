@@ -14,9 +14,9 @@ typedef struct {
 
 int menu();
 void limparTela();
-void cadastrarProduto(Produto produtos[], int *qtdAtualProdutos);
+// void cadastrarProduto(Produto produtos[], int *qtdAtualProdutos);
 void alterarProduto(Produto produtos[], int qtdAtualProdutos);
-void excluirProduto(Produto produtos[], int *qtdAtualProdutos);
+// void excluirProduto(Produto produtos[], int *qtdAtualProdutos);
 void gerarRelatorio(Produto produtos[], int qtdAtualProdutos);
 void mostrarProdutos(Produto produtos[], int qtdAtualProdutos);
 
@@ -32,7 +32,7 @@ int main() {
         switch (escolha) {
             case 1:
                 if (qtdAtualProdutos < QTD_PRODUTOS) {
-                    cadastrarProduto(produtos, &qtdAtualProdutos);
+                    // cadastrarProduto(produtos, &qtdAtualProdutos);
                 } else {
                     printf("Limite de produtos atingido!\n");
                 }
@@ -41,7 +41,7 @@ int main() {
                 alterarProduto(produtos, qtdAtualProdutos);
                 break;
             case 3:
-                excluirProduto(produtos, &qtdAtualProdutos);
+                // excluirProduto(produtos, &qtdAtualProdutos);
                 break;
             case 4:
                 gerarRelatorio(produtos, qtdAtualProdutos);
@@ -79,11 +79,11 @@ int menu() {
 
 void limparTela() {
     // Para sistemas Windows use "cls"
-    system("clear"); // Para sistemas Unix/Linux use "clear"
+    system("cls"); // Para sistemas Unix/Linux use "clear"
 }
 
-void cadastrarProduto(Produto produtos[], int *qtdAtualProdutos) {
-}
+// void cadastrarProduto(Produto produtos[], int *qtdAtualProdutos) {
+// }
 
 void alterarProduto(Produto produtos[], int qtdAtualProdutos) {
       int id, encontrado = 0;
@@ -114,11 +114,15 @@ void alterarProduto(Produto produtos[], int qtdAtualProdutos) {
             break;
         }
     }
+
+    if(encontrado == 0) {
+        printf("Produto nao encontrado");
+    }
 }
 
-void excluirProduto(Produto produtos[], int *qtdAtualProdutos) {
+// void excluirProduto(Produto produtos[], int *qtdAtualProdutos) {
     
-}
+// }
 
 void gerarRelatorio(Produto produtos[], int qtdAtualProdutos) {
     FILE *file = fopen("RelatorioProdutos.txt", "w"); 
@@ -139,5 +143,7 @@ void gerarRelatorio(Produto produtos[], int qtdAtualProdutos) {
 }
 
 void mostrarProdutos(Produto produtos[], int qtdAtualProdutos) {
-
+    for (int i = 0; i < qtdAtualProdutos; i++) {
+         printf("Produto: %s\n Valor: %.2f", produtos[i].nome, produtos[i].valor);
+    }
 }
